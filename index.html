@@ -386,13 +386,13 @@
     </div>
   </div>
 
-  <!-- ADMIN UPLOAD STUDIO MODAL -->
+  <!-- ADMIN MULTI-UPLOAD STUDIO MODAL -->
   <div id="uploadModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-xl p-4 overflow-y-auto">
     <div class="glass-panel border border-white/15 rounded-3xl w-full max-w-2xl p-6 sm:p-8 shadow-2xl animate-modal my-8">
       <div class="flex items-center justify-between pb-4 border-b border-white/10">
         <div>
-          <span class="text-[10px] font-bold uppercase tracking-widest text-fuchsia-400">Walloraa Cloud Publisher</span>
-          <h2 class="font-display font-bold text-xl sm:text-2xl text-white">Upload New Wallpaper</h2>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-fuchsia-400">Walloraa Batch Cloud Publisher</span>
+          <h2 class="font-display font-bold text-xl sm:text-2xl text-white">Upload Wallpapers</h2>
         </div>
         <button onclick="closeUploadModal()" class="w-9 h-9 rounded-full bg-white/[0.06] hover:bg-white/[0.12] flex items-center justify-center text-slate-400 hover:text-white transition cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -402,17 +402,17 @@
       <form id="uploadForm" onsubmit="handlePublishWallpaper(event)" class="grid grid-cols-1 md:grid-cols-12 gap-6 pt-5">
         <div class="md:col-span-7 space-y-4">
           <div id="dropZone" onclick="document.getElementById('fileInput').click()" class="border-2 border-dashed border-white/15 hover:border-fuchsia-400/60 rounded-2xl p-5 text-center cursor-pointer transition-all bg-white/[0.02] hover:bg-fuchsia-500/[0.04]">
-            <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleFileSelect(event)" />
+            <input id="fileInput" type="file" multiple accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleFileSelect(event)" />
             <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 border border-white/10 flex items-center justify-center mx-auto mb-2.5">
               <svg class="w-5 h-5 text-fuchsia-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
             </div>
-            <p class="text-sm font-semibold text-white">Choose 4K Wallpaper File</p>
-            <p id="selectedFileName" class="text-xs text-slate-400 mt-1">JPG, PNG, or WEBP (Uploads directly to Supabase)</p>
+            <p class="text-sm font-semibold text-white">Choose 1 or Multiple 4K Files</p>
+            <p id="selectedFileName" class="text-xs text-slate-400 mt-1">Select single or multiple JPG, PNG, or WEBP images</p>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Artwork Title</label>
-            <input id="titleInput" type="text" required placeholder="e.g. Cyber Tokyo Rain" oninput="updateLiveCardPreview()" class="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-fuchsia-500" />
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Artwork Title (Optional for Batch)</label>
+            <input id="titleInput" type="text" placeholder="Leave blank to auto-name from filenames, or enter batch title" oninput="updateLiveCardPreview()" class="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-fuchsia-500" />
           </div>
 
           <div class="grid grid-cols-2 gap-3">
@@ -421,7 +421,7 @@
               <select id="categoryInput" onchange="updateLiveCardPreview()" class="w-full bg-[#11121d] border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-fuchsia-500">
                 <option value="Abstract">Abstract</option>
                 <option value="Nature">Nature</option>
-                <option value="beauty">Beauty</option>
+                <option value="Beauty">Beauty</option>
                 <option value="Cars & Bikes">Cars & Bikes</option>
                 <option value="Anime">Anime</option>
                 <option value="Minimal">Minimal</option>
@@ -446,24 +446,27 @@
 
           <label class="flex items-center gap-2.5 cursor-pointer pt-1">
             <input id="featuredInput" type="checkbox" class="w-4 h-4 rounded accent-fuchsia-500" />
-            <span class="text-xs font-medium text-slate-300">Set as Hero Featured Wallpaper</span>
+            <span class="text-xs font-medium text-slate-300">Set first image as Hero Featured Wallpaper</span>
           </label>
         </div>
 
         <!-- Live Card Preview -->
         <div class="md:col-span-5 flex flex-col justify-between bg-white/[0.02] border border-white/10 rounded-2xl p-4">
           <div>
-            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-2.5">Live Card Preview</span>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Live Card Preview</span>
+              <span id="batchCountBadge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30">0 files</span>
+            </div>
             <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#0b0c14] shadow-xl">
               <div class="relative aspect-[4/5] bg-gradient-to-br from-violet-900/40 via-fuchsia-900/30 to-cyan-900/40 flex items-center justify-center overflow-hidden">
                 <img id="uploadPreviewImg" src="" alt="" class="hidden w-full h-full object-cover" />
                 <div id="uploadPlaceholder" class="text-center p-4">
-                  <p class="text-xs text-slate-400">Select an image file to preview</p>
+                  <p class="text-xs text-slate-400">Select 1 or more images to preview</p>
                 </div>
                 <span id="previewResBadge" class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/60 backdrop-blur-md text-cyan-300 border border-white/10">4K UHD</span>
               </div>
               <div class="p-3">
-                <p id="previewTitleText" class="font-display font-bold text-sm text-white truncate">Untitled Artwork</p>
+                <p id="previewTitleText" class="font-display font-bold text-sm text-white truncate">Auto-Named Artwork</p>
                 <p id="previewCatText" class="text-[11px] text-fuchsia-300 mt-0.5">Abstract</p>
               </div>
             </div>
@@ -668,7 +671,7 @@
     let currentUser = null;
     let activeCategory = 'All';
     let searchQuery = '';
-    let selectedFile = null;
+    let selectedFiles = [];
     let currentLightboxItem = null;
 
     async function initApp() {
@@ -1063,10 +1066,11 @@
         return;
       }
       document.getElementById('uploadForm').reset();
-      selectedFile = null;
-      document.getElementById('selectedFileName').textContent = 'JPG, PNG, or WEBP (Uploads directly to Supabase)';
+      selectedFiles = [];
+      document.getElementById('selectedFileName').textContent = 'Select single or multiple JPG, PNG, or WEBP images';
       document.getElementById('uploadPreviewImg').classList.add('hidden');
       document.getElementById('uploadPlaceholder').classList.remove('hidden');
+      document.getElementById('batchCountBadge').classList.add('hidden');
       updateLiveCardPreview();
       document.getElementById('uploadModal').classList.remove('hidden');
       document.getElementById('uploadModal').classList.add('flex');
@@ -1078,10 +1082,23 @@
     }
 
     function handleFileSelect(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      selectedFile = file;
-      document.getElementById('selectedFileName').textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      selectedFiles = files;
+
+      const totalMB = (files.reduce((sum, f) => sum + f.size, 0) / 1024 / 1024).toFixed(2);
+      document.getElementById('selectedFileName').textContent =
+        files.length === 1
+          ? `${files[0].name} (${totalMB} MB)`
+          : `${files.length} wallpapers selected (${totalMB} MB total)`;
+
+      const countBadge = document.getElementById('batchCountBadge');
+      if (files.length > 1) {
+        countBadge.textContent = `${files.length} files`;
+        countBadge.classList.remove('hidden');
+      } else {
+        countBadge.classList.add('hidden');
+      }
 
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -1090,65 +1107,95 @@
         img.classList.remove('hidden');
         document.getElementById('uploadPlaceholder').classList.add('hidden');
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(files[0]);
+      updateLiveCardPreview();
+    }
+
+    function formatTitleFromFileName(fileName) {
+      return fileName
+        .replace(/\.[^/.]+$/, '')
+        .replace(/[-_]+/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase())
+        .trim() || 'Walloraa 4K Drop';
     }
 
     function updateLiveCardPreview() {
-      document.getElementById('previewTitleText').textContent = document.getElementById('titleInput').value.trim() || 'Untitled Artwork';
+      const typedTitle = document.getElementById('titleInput').value.trim();
+      let previewTitle = 'Auto-Named Artwork';
+
+      if (typedTitle) {
+        previewTitle = selectedFiles.length > 1 ? `${typedTitle} #1` : typedTitle;
+      } else if (selectedFiles.length > 0) {
+        previewTitle = formatTitleFromFileName(selectedFiles[0].name);
+      }
+
+      document.getElementById('previewTitleText').textContent = previewTitle;
       document.getElementById('previewCatText').textContent = document.getElementById('categoryInput').value;
       document.getElementById('previewResBadge').textContent = document.getElementById('resolutionInput').value;
     }
 
     async function handlePublishWallpaper(e) {
       e.preventDefault();
-      if (!selectedFile) {
-        showToast('Please select a wallpaper image file first.');
+      if (!selectedFiles.length) {
+        showToast('Please select at least one wallpaper image first.');
         return;
       }
 
       const btn = document.getElementById('publishSubmitBtn');
       btn.disabled = true;
-      btn.textContent = 'Uploading to Cloud...';
+
+      const baseTitle = document.getElementById('titleInput').value.trim();
+      const category = document.getElementById('categoryInput').value;
+      const resolution = document.getElementById('resolutionInput').value;
+      const isFeatured = document.getElementById('featuredInput').checked;
+      const tagsRaw = document.getElementById('tagsInput').value.trim();
+      const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [category.toLowerCase(), '4k', 'walloraa'];
+
+      let uploadedCount = 0;
 
       try {
-        const fileExt = selectedFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+        for (let i = 0; i < selectedFiles.length; i++) {
+          const file = selectedFiles[i];
+          btn.textContent = `Uploading ${i + 1} of ${selectedFiles.length}...`;
 
-        const { error: uploadError } = await sb.storage
-          .from('wallpapers')
-          .upload(fileName, selectedFile, { cacheControl: '3600', upsert: false });
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
 
-        if (uploadError) throw uploadError;
+          const { error: uploadError } = await sb.storage
+            .from('wallpapers')
+            .upload(fileName, file, { cacheControl: '3600', upsert: false });
 
-        const { data: { publicUrl } } = sb.storage
-          .from('wallpapers')
-          .getPublicUrl(fileName);
+          if (uploadError) throw uploadError;
 
-        const title = document.getElementById('titleInput').value.trim();
-        const category = document.getElementById('categoryInput').value;
-        const resolution = document.getElementById('resolutionInput').value;
-        const isFeatured = document.getElementById('featuredInput').checked;
-        const tagsRaw = document.getElementById('tagsInput').value.trim();
-        const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [category.toLowerCase(), '4k', 'walloraa'];
+          const { data: { publicUrl } } = sb.storage
+            .from('wallpapers')
+            .getPublicUrl(fileName);
 
-        const { error: dbError } = await sb.from('wallpapers').insert([{
-          title,
-          category,
-          resolution,
-          image_url: publicUrl,
-          tags,
-          featured: isFeatured,
-          colors: ['#7c3aed', '#ec4899', '#06b6d4']
-        }]);
+          const itemTitle = baseTitle
+            ? (selectedFiles.length > 1 ? `${baseTitle} #${i + 1}` : baseTitle)
+            : formatTitleFromFileName(file.name);
 
-        if (dbError) throw dbError;
+          const { error: dbError } = await sb.from('wallpapers').insert([{
+            title: itemTitle,
+            category,
+            resolution,
+            image_url: publicUrl,
+            tags,
+            featured: isFeatured && i === 0,
+            colors: ['#7c3aed', '#ec4899', '#06b6d4']
+          }]);
+
+          if (dbError) throw dbError;
+          uploadedCount++;
+        }
 
         closeUploadModal();
-        showToast(`"${title}" is now live on Walloraa!`);
+        showToast(`${uploadedCount} wallpaper${uploadedCount > 1 ? 's' : ''} published to Walloraa!`);
         await fetchWallpapersFromCloud();
       } catch (err) {
         console.error(err);
-        showToast(`Upload failed: ${err.message}`);
+        showToast(`Uploaded ${uploadedCount}/${selectedFiles.length}. Error: ${err.message}`);
+        if (uploadedCount > 0) await fetchWallpapersFromCloud();
       } finally {
         btn.disabled = false;
         btn.textContent = 'Publish to Walloraa';
