@@ -155,8 +155,8 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="font-display font-bold text-xl tracking-tight text-white">Walloraa</span>
-            <span id="connectionBadge" class="hidden sm:inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/10">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>Connecting...
+            <span id="connectionBadge" class="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/[0.06] text-slate-300 border border-white/10">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Live Cloud
             </span>
           </div>
           <p class="text-[11px] text-slate-400 hidden sm:block">Open-Source 4K Visual Studio</p>
@@ -238,20 +238,8 @@
     </div>
   </header>
 
-  <!-- Setup Banner (Automatically hides once you paste your Supabase keys!) -->
-  <div id="setupBanner" class="hidden relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-    <div class="rounded-2xl bg-gradient-to-r from-amber-500/15 via-fuchsia-500/15 to-cyan-500/15 border border-amber-400/30 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-      <div class="flex items-start gap-3">
-        <span class="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        </span>
-        <div>
-          <p class="text-xs sm:text-sm font-semibold text-amber-200">Demo Preview Mode Active — Connect Your Supabase Keys</p>
-          <p class="text-xs text-slate-300 mt-0.5">Paste your <code class="text-cyan-300 bg-black/40 px-1.5 py-0.5 rounded">https://dhzkkpsdowpsneozkhvt.supabase.co</code> and <code class="text-cyan-300 bg-black/40 px-1.5 py-0.5 rounded">sb_publishable_uLdZ-Lj2jEWMmyyFNl7W7w_oXlom5lN</code> into lines 377–378 of <code class="text-white">index.html</code> to go live.</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Setup Banner -->
+  <div id="setupBanner" class="hidden relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4"></div>
 
   <!-- Editorial Hero & Featured Drop -->
   <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-6">
@@ -305,9 +293,7 @@
         </div>
 
         <!-- Right Featured Wallpaper Card -->
-        <div id="featuredCardContainer" class="lg:col-span-5">
-          <!-- Populated dynamically -->
-        </div>
+        <div id="featuredCardContainer" class="lg:col-span-5"></div>
       </div>
     </div>
   </section>
@@ -329,7 +315,6 @@
 
   <!-- Main Gallery Grid -->
   <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-    <!-- Loading Skeleton -->
     <div id="loadingState" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-4">
       <div class="h-80 rounded-3xl bg-white/[0.04] animate-pulse border border-white/5"></div>
       <div class="h-96 rounded-3xl bg-white/[0.04] animate-pulse border border-white/5"></div>
@@ -374,4 +359,836 @@
 
       <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center mb-4 shadow-lg shadow-fuchsia-500/25">
         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoi
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+      </div>
+
+      <h2 class="font-display font-bold text-2xl text-white">Walloraa Admin Studio</h2>
+      <p class="text-xs text-slate-400 mt-1 mb-6">Sign in with your Supabase Admin credentials to publish or manage wallpapers.</p>
+
+      <form id="loginForm" onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Admin Email</label>
+          <input id="adminEmailInput" type="email" required placeholder="you@example.com" class="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-fuchsia-500" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Password</label>
+          <input id="adminPasswordInput" type="password" required placeholder="••••••••" class="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-fuchsia-500" />
+        </div>
+
+        <p id="loginErrorMsg" class="hidden text-xs text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl px-3.5 py-2.5"></p>
+
+        <button id="loginSubmitBtn" type="submit" class="w-full btn-luxury py-3.5 rounded-xl font-bold text-sm text-white shadow-xl cursor-pointer mt-2">
+          Sign In to Admin Studio
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN UPLOAD STUDIO MODAL -->
+  <div id="uploadModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-xl p-4 overflow-y-auto">
+    <div class="glass-panel border border-white/15 rounded-3xl w-full max-w-2xl p-6 sm:p-8 shadow-2xl animate-modal my-8">
+      <div class="flex items-center justify-between pb-4 border-b border-white/10">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-fuchsia-400">Walloraa Cloud Publisher</span>
+          <h2 class="font-display font-bold text-xl sm:text-2xl text-white">Upload New Wallpaper</h2>
+        </div>
+        <button onclick="closeUploadModal()" class="w-9 h-9 rounded-full bg-white/[0.06] hover:bg-white/[0.12] flex items-center justify-center text-slate-400 hover:text-white transition cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="uploadForm" onsubmit="handlePublishWallpaper(event)" class="grid grid-cols-1 md:grid-cols-12 gap-6 pt-5">
+        <div class="md:col-span-7 space-y-4">
+          <div id="dropZone" onclick="document.getElementById('fileInput').click()" class="border-2 border-dashed border-white/15 hover:border-fuchsia-400/60 rounded-2xl p-5 text-center cursor-pointer transition-all bg-white/[0.02] hover:bg-fuchsia-500/[0.04]">
+            <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleFileSelect(event)" />
+            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-500/20 to-cyan-500/20 border border-white/10 flex items-center justify-center mx-auto mb-2.5">
+              <svg class="w-5 h-5 text-fuchsia-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+            </div>
+            <p class="text-sm font-semibold text-white">Choose 4K Wallpaper File</p>
+            <p id="selectedFileName" class="text-xs text-slate-400 mt-1">JPG, PNG, or WEBP (Uploads directly to Supabase)</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Artwork Title</label>
+            <input id="titleInput" type="text" required placeholder="e.g. Cyber Tokyo Rain" oninput="updateLiveCardPreview()" class="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-fuchsia-500" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Category</label>
+              <select id="categoryInput" onchange="updateLiveCardPreview()" class="w-full bg-[#11121d] border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-fuchsia-500">
+                <option value="Abstract">Abstract</option>
+                <option value="Nature">Nature</option>
+                <option value="Cars & Bikes">Cars & Bikes</option>
+                <option value="Anime">Anime</option>
+                <option value="Minimal">Minimal</option>
+                <option value="AMOLED Dark">AMOLED Dark</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Resolution</label>
+              <select id="resolutionInput" onchange="updateLiveCardPreview()" class="w-full bg-[#11121d] border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-fuchsia-500">
+                <option value="4K UHD">4K UHD (3840×2160)</option>
+                <option value="8K RAW">8K RAW (7680×4320)</option>
+                <option value="Mobile 4K">Mobile 4K (2160×3840)</option>
+                <option value="5K Retina">5K Retina</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Tags</label>
+            <input id="tagsInput" type="text" placeholder="neon, dark, amoled, aesthetic" class="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-fuchsia-500" />
+          </div>
+
+          <label class="flex items-center gap-2.5 cursor-pointer pt-1">
+            <input id="featuredInput" type="checkbox" class="w-4 h-4 rounded accent-fuchsia-500" />
+            <span class="text-xs font-medium text-slate-300">Set as Hero Featured Wallpaper</span>
+          </label>
+        </div>
+
+        <!-- Live Card Preview -->
+        <div class="md:col-span-5 flex flex-col justify-between bg-white/[0.02] border border-white/10 rounded-2xl p-4">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-2.5">Live Card Preview</span>
+            <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#0b0c14] shadow-xl">
+              <div class="relative aspect-[4/5] bg-gradient-to-br from-violet-900/40 via-fuchsia-900/30 to-cyan-900/40 flex items-center justify-center overflow-hidden">
+                <img id="uploadPreviewImg" src="" alt="" class="hidden w-full h-full object-cover" />
+                <div id="uploadPlaceholder" class="text-center p-4">
+                  <p class="text-xs text-slate-400">Select an image file to preview</p>
+                </div>
+                <span id="previewResBadge" class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/60 backdrop-blur-md text-cyan-300 border border-white/10">4K UHD</span>
+              </div>
+              <div class="p-3">
+                <p id="previewTitleText" class="font-display font-bold text-sm text-white truncate">Untitled Artwork</p>
+                <p id="previewCatText" class="text-[11px] text-fuchsia-300 mt-0.5">Abstract</p>
+              </div>
+            </div>
+          </div>
+
+          <button id="publishSubmitBtn" type="submit" class="w-full mt-4 btn-luxury py-3 rounded-xl font-bold text-sm text-white shadow-xl cursor-pointer">
+            Publish to Walloraa
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE LIGHTBOX & DEVICE MOCKUP PREVIEWER -->
+  <div id="lightboxModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 backdrop-blur-2xl p-3 sm:p-6 overflow-y-auto">
+    <div class="glass-panel border border-white/15 rounded-3xl max-w-6xl w-full overflow-hidden shadow-2xl animate-modal my-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12">
+
+        <!-- Stage -->
+        <div class="lg:col-span-8 bg-[#050509] relative flex flex-col items-center justify-center min-h-[380px] sm:min-h-[540px] p-4 sm:p-8 overflow-hidden">
+          <div id="stageGlow" class="absolute inset-0 opacity-30 blur-3xl pointer-events-none transition-all duration-500"></div>
+
+          <!-- View Switcher -->
+          <div class="relative z-20 flex items-center gap-1.5 bg-white/[0.07] backdrop-blur-md p-1 rounded-full border border-white/10 mb-5">
+            <button onclick="setMockupMode('raw')" id="modeRawBtn" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-black transition cursor-pointer">Full Art</button>
+            <button onclick="setMockupMode('phone')" id="modePhoneBtn" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white transition cursor-pointer">Phone Lockscreen</button>
+            <button onclick="setMockupMode('desktop')" id="modeDesktopBtn" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white transition cursor-pointer">Desktop Frame</button>
+          </div>
+
+          <div id="mockupRaw" class="relative z-10 flex items-center justify-center w-full">
+            <img id="lightboxImg" src="" alt="" class="max-h-[62vh] w-auto object-contain rounded-2xl shadow-2xl border border-white/10" />
+          </div>
+
+          <div id="mockupPhone" class="hidden relative z-10 w-[235px] h-[475px] rounded-[38px] border-[6px] border-slate-800 bg-black shadow-[0_25px_70px_rgba(0,0,0,0.9)] overflow-hidden">
+            <div class="absolute top-2.5 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-full z-20"></div>
+            <img id="phonePreviewImg" src="" alt="" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent to-black/50 z-10 flex flex-col justify-between p-5 text-center">
+              <div class="pt-7">
+                <p class="text-[11px] font-medium text-white/90 tracking-wide">Thursday, Nov 12</p>
+                <p class="font-display font-extrabold text-5xl text-white tracking-tight mt-0.5 drop-shadow">09:41</p>
+              </div>
+              <div class="w-24 h-1 bg-white/80 rounded-full mx-auto"></div>
+            </div>
+          </div>
+
+          <div id="mockupDesktop" class="hidden relative z-10 w-full max-w-xl">
+            <div class="rounded-2xl border-[6px] border-slate-800 bg-black overflow-hidden shadow-2xl aspect-video relative">
+              <img id="desktopPreviewImg" src="" alt="" class="w-full h-full object-cover" />
+              <div class="absolute bottom-3 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-2xl bg-white/15 backdrop-blur-xl border border-white/20 flex items-center gap-2.5">
+                <span class="w-5 h-5 rounded-md bg-gradient-to-tr from-blue-500 to-cyan-400"></span>
+                <span class="w-5 h-5 rounded-md bg-gradient-to-tr from-fuchsia-500 to-pink-500"></span>
+                <span class="w-5 h-5 rounded-md bg-gradient-to-tr from-amber-400 to-orange-500"></span>
+                <span class="w-5 h-5 rounded-md bg-gradient-to-tr from-emerald-400 to-teal-500"></span>
+              </div>
+            </div>
+            <div class="w-24 h-5 bg-slate-800 mx-auto rounded-b-lg"></div>
+          </div>
+        </div>
+
+        <!-- Details & Download Panel -->
+        <div class="lg:col-span-4 p-6 sm:p-7 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-white/10 bg-[#0b0c15]/90">
+          <div>
+            <div class="flex items-center justify-between">
+              <span id="lightboxCategory" class="text-xs font-bold uppercase tracking-widest text-fuchsia-300 bg-fuchsia-500/15 border border-fuchsia-500/30 px-3 py-1 rounded-full"></span>
+              <button onclick="closeLightbox()" class="w-9 h-9 rounded-full bg-white/[0.06] hover:bg-white/[0.15] flex items-center justify-center text-slate-300 hover:text-white transition cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+              </button>
+            </div>
+
+            <h2 id="lightboxTitle" class="font-display font-bold text-2xl text-white mt-4 leading-snug"></h2>
+            <p class="text-xs text-slate-400 mt-1">Uploaded by <span class="text-white font-medium">Walloraa Admin</span> • CC0 Open Source</p>
+
+            <div class="mt-5">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-2">Color Palette (Click to Copy)</span>
+              <div id="lightboxPalette" class="flex items-center gap-2.5"></div>
+            </div>
+
+            <div class="mt-5 bg-white/[0.03] rounded-2xl p-4 border border-white/10 space-y-2.5 text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Resolution</span>
+                <span id="lightboxRes" class="font-semibold text-cyan-300"></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Downloads</span>
+                <span id="lightboxDownloads" class="font-semibold text-white"></span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">License</span>
+                <span class="font-semibold text-emerald-400">Free Commercial & Personal</span>
+              </div>
+            </div>
+
+            <div class="mt-5">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block mb-2">Tags</span>
+              <div id="lightboxTags" class="flex flex-wrap gap-1.5"></div>
+            </div>
+          </div>
+
+          <div class="pt-6 mt-6 border-t border-white/10 space-y-2.5">
+            <button id="lightboxDownloadBtn" class="w-full btn-luxury py-3.5 px-5 rounded-2xl font-bold text-sm text-white flex items-center justify-center gap-2 shadow-xl cursor-pointer">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              Download Original Quality
+            </button>
+            <button id="lightboxDeleteBtn" class="hidden w-full bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition cursor-pointer">
+              Delete Wallpaper (Admin)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 translate-y-24 opacity-0 transition-all duration-300 glass-panel border border-fuchsia-500/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs sm:text-sm font-medium">
+    <span class="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-fuchsia-400 to-cyan-400"></span>
+    <span id="toastMessage">Done!</span>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://dhzkkpsdowpsneozkhvt.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_uLdZ-Lj2jEWMmyyFNl7W7w_oXlom5lN";
+
+    const isConfigured =
+      SUPABASE_URL.startsWith("https://") &&
+      !SUPABASE_URL.includes("YOUR_SUPABASE") &&
+      SUPABASE_ANON_KEY.length > 20;
+
+    const sb = isConfigured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+    const STARTER_WALLPAPERS = [
+      {
+        id: 'demo-1',
+        title: 'Chromatic Silk Waves',
+        category: 'Abstract',
+        resolution: '8K RAW',
+        image_url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=90',
+        colors: ['#7c3aed', '#ec4899', '#06b6d4'],
+        tags: ['3d', 'silk', 'gradient', 'colorful'],
+        downloads: 1420,
+        featured: true
+      },
+      {
+        id: 'demo-2',
+        title: 'Aurora Borealis Over Iceland',
+        category: 'Nature',
+        resolution: '4K UHD',
+        image_url: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=1600&q=90',
+        colors: ['#10b981', '#06b6d4', '#0f172a'],
+        tags: ['aurora', 'night', 'iceland', 'stars'],
+        downloads: 985,
+        featured: false
+      },
+      {
+        id: 'demo-3',
+        title: 'Obsidian Supercar Studio',
+        category: 'Cars & Bikes',
+        resolution: '4K UHD',
+        image_url: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=1600&q=90',
+        colors: ['#f43f5e', '#1e293b', '#09090b'],
+        tags: ['supercar', 'dark', 'sport', 'luxury'],
+        downloads: 1840,
+        featured: false
+      },
+      {
+        id: 'demo-4',
+        title: 'Shinjuku Midnight Neon',
+        category: 'Anime',
+        resolution: '4K UHD',
+        image_url: 'https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1600&q=90',
+        colors: ['#ec4899', '#3b82f6', '#1e1b4b'],
+        tags: ['tokyo', 'neon', 'cyberpunk', 'night'],
+        downloads: 2150,
+        featured: false
+      },
+      {
+        id: 'demo-5',
+        title: 'Iridescent Glass Prism',
+        category: 'Minimal',
+        resolution: '5K Retina',
+        image_url: 'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1600&q=90',
+        colors: ['#a855f7', '#38bdf8', '#f472b6'],
+        tags: ['prism', 'glass', 'minimal', 'aesthetic'],
+        downloads: 1120,
+        featured: false
+      },
+      {
+        id: 'demo-6',
+        title: 'AMOLED Crimson Eclipse',
+        category: 'AMOLED Dark',
+        resolution: 'Mobile 4K',
+        image_url: 'https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=1600&q=90',
+        colors: ['#e11d48', '#7c3aed', '#000000'],
+        tags: ['amoled', 'oled', 'dark', 'black'],
+        downloads: 1690,
+        featured: false
+      }
+    ];
+
+    const CATEGORIES = ['All', 'Abstract', 'Nature', 'Cars & Bikes', 'Anime', 'Minimal', 'AMOLED Dark'];
+
+    let wallpapers = [];
+    let currentUser = null;
+    let activeCategory = 'All';
+    let searchQuery = '';
+    let selectedFile = null;
+    let currentLightboxItem = null;
+
+    async function initApp() {
+      const badge = document.getElementById('connectionBadge');
+      const setupBanner = document.getElementById('setupBanner');
+
+      if (!isConfigured) {
+        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>Demo Mode`;
+        setupBanner.classList.remove('hidden');
+        wallpapers = [...STARTER_WALLPAPERS];
+        finishLoading();
+        return;
+      }
+
+      badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>Live Cloud`;
+
+      const { data: { session } } = await sb.auth.getSession();
+      updateAuthUI(session?.user || null);
+
+      sb.auth.onAuthStateChange((_event, session) => {
+        updateAuthUI(session?.user || null);
+        renderGallery();
+      });
+
+      await fetchWallpapersFromCloud();
+    }
+
+    async function fetchWallpapersFromCloud() {
+      const { data, error } = await sb
+        .from('wallpapers')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Supabase fetch error:', error);
+        showToast('Could not fetch database rows. Showing starter gallery.');
+        wallpapers = [...STARTER_WALLPAPERS];
+      } else if (data && data.length > 0) {
+        wallpapers = data;
+      } else {
+        wallpapers = [...STARTER_WALLPAPERS];
+      }
+
+      finishLoading();
+    }
+
+    function finishLoading() {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('galleryGrid').classList.remove('hidden');
+      renderCategories();
+      renderFeaturedCard();
+      renderGallery();
+      updateStats();
+    }
+
+    function updateAuthUI(user) {
+      currentUser = user;
+      const adminControls = document.getElementById('adminControls');
+      const adminLoginBtn = document.getElementById('adminLoginBtn');
+
+      if (user) {
+        adminControls.classList.remove('hidden');
+        adminControls.classList.add('flex');
+        adminLoginBtn.classList.add('hidden');
+      } else {
+        adminControls.classList.add('hidden');
+        adminControls.classList.remove('flex');
+        adminLoginBtn.classList.remove('hidden');
+      }
+    }
+
+    function openLoginModal() {
+      if (!isConfigured) {
+        showToast('Paste your Supabase URL & Anon Key in index.html first!');
+        return;
+      }
+      document.getElementById('loginErrorMsg').classList.add('hidden');
+      document.getElementById('loginModal').classList.remove('hidden');
+      document.getElementById('loginModal').classList.add('flex');
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.add('hidden');
+      document.getElementById('loginModal').classList.remove('flex');
+    }
+
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('adminEmailInput').value.trim();
+      const password = document.getElementById('adminPasswordInput').value;
+      const btn = document.getElementById('loginSubmitBtn');
+      const errBox = document.getElementById('loginErrorMsg');
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in...';
+      errBox.classList.add('hidden');
+
+      const { error } = await sb.auth.signInWithPassword({ email, password });
+
+      btn.disabled = false;
+      btn.textContent = 'Sign In to Admin Studio';
+
+      if (error) {
+        errBox.textContent = error.message;
+        errBox.classList.remove('hidden');
+      } else {
+        closeLoginModal();
+        showToast('Welcome back, Walloraa Admin!');
+      }
+    }
+
+    async function handleAdminLogout() {
+      if (!sb) return;
+      await sb.auth.signOut();
+      showToast('Signed out of Admin Studio');
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').textContent = wallpapers.length;
+      const totalDl = wallpapers.reduce((acc, item) => acc + (item.downloads || 0), 0);
+      document.getElementById('statDownloads').textContent = totalDl >= 1000 ? (totalDl / 1000).toFixed(1) + 'K+' : totalDl;
+    }
+
+    function renderFeaturedCard() {
+      const featured = wallpapers.find(w => w.featured) || wallpapers[0];
+      const container = document.getElementById('featuredCardContainer');
+      if (!featured) return;
+
+      container.innerHTML = `
+        <div onclick="openLightbox('${featured.id}')" class="group relative rounded-2xl overflow-hidden border border-white/15 shadow-2xl cursor-pointer aspect-[16/11] bg-[#0b0c14]">
+          <img src="${featured.image_url}" alt="${featured.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#07070c] via-black/25 to-transparent"></div>
+          <div class="absolute top-3.5 left-3.5 flex items-center gap-2">
+            <span class="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg">
+              ★ Featured Drop
+            </span>
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/60 backdrop-blur-md text-cyan-300 border border-white/10">
+              ${featured.resolution || '4K UHD'}
+            </span>
+          </div>
+          <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-3">
+            <div>
+              <p class="text-xs text-fuchsia-300 font-medium">${featured.category}</p>
+              <h3 class="font-display font-bold text-lg sm:text-xl text-white leading-tight">${featured.title}</h3>
+            </div>
+            <span class="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            </span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCategories() {
+      const bar = document.getElementById('categoryBar');
+      bar.innerHTML = CATEGORIES.map(cat => {
+        const active = cat === activeCategory;
+        return `
+          <button
+            onclick="selectCategory('${cat}')"
+            class="px-4 py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap transition-all cursor-pointer ${
+              active
+                ? 'btn-luxury text-white shadow-lg shadow-fuchsia-500/25'
+                : 'bg-white/[0.04] text-slate-300 hover:bg-white/[0.09] hover:text-white border border-white/10'
+            }"
+          >
+            ${cat}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectCategory(cat) {
+      activeCategory = cat;
+      renderCategories();
+      renderGallery();
+    }
+
+    function handleSearch(val) {
+      searchQuery = val.trim().toLowerCase();
+      document.getElementById('searchInput').value = val;
+      document.getElementById('searchInputMobile').value = val;
+      renderGallery();
+    }
+
+    function resetFilters() {
+      activeCategory = 'All';
+      searchQuery = '';
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchInputMobile').value = '';
+      renderCategories();
+      renderGallery();
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById('galleryGrid');
+      const empty = document.getElementById('emptyState');
+      const sortBy = document.getElementById('sortSelect').value;
+
+      let filtered = wallpapers.filter(item => {
+        const matchesCat = activeCategory === 'All' || item.category === activeCategory;
+        const tagsArr = Array.isArray(item.tags) ? item.tags : [];
+        const matchesSearch =
+          !searchQuery ||
+          item.title.toLowerCase().includes(searchQuery) ||
+          item.category.toLowerCase().includes(searchQuery) ||
+          tagsArr.some(t => t.toLowerCase().includes(searchQuery));
+        return matchesCat && matchesSearch;
+      });
+
+      if (sortBy === 'popular') {
+        filtered = [...filtered].sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+
+      empty.classList.add('hidden');
+      grid.innerHTML = filtered.map(item => {
+        const colors = Array.isArray(item.colors) ? item.colors : ['#7c3aed', '#ec4899', '#06b6d4'];
+        const isCloudRow = !String(item.id).startsWith('demo-');
+        return `
+        <article class="masonry-item group glass-card rounded-3xl overflow-hidden relative">
+          <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('${item.id}')">
+            <img
+              src="${item.image_url}"
+              alt="${item.title}"
+              loading="lazy"
+              class="w-full h-auto object-cover block transition-transform duration-700 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-[#07070c] via-black/20 to-transparent opacity-80 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300"></div>
+
+            <div class="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between">
+              <span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-black/60 backdrop-blur-md text-cyan-300 border border-white/10">
+                ${item.resolution || '4K UHD'}
+              </span>
+              ${currentUser && isCloudRow ? `
+                <button
+                  onclick="event.stopPropagation(); deleteWallpaper('${item.id}', '${item.image_url}')"
+                  title="Delete Wallpaper"
+                  class="w-8 h-8 rounded-full bg-rose-600/90 hover:bg-rose-500 text-white flex items-center justify-center shadow-lg transition cursor-pointer"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              ` : ''}
+            </div>
+
+            <div class="absolute bottom-3.5 left-3.5 right-3.5 flex items-end justify-between gap-2 sm:translate-y-2 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 transition-all duration-300">
+              <div class="min-w-0">
+                <span class="text-[11px] font-semibold text-fuchsia-300">${item.category}</span>
+                <h3 class="font-display font-bold text-base text-white truncate">${item.title}</h3>
+              </div>
+              <button
+                onclick="event.stopPropagation(); triggerDownload('${item.id}')"
+                title="Download Free"
+                class="shrink-0 w-10 h-10 rounded-full btn-luxury text-white flex items-center justify-center shadow-lg cursor-pointer"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="px-4 py-3 flex items-center justify-between border-t border-white/[0.06] bg-white/[0.015]">
+            <div class="flex items-center gap-1.5">
+              ${colors.map(c => `<span class="w-3 h-3 rounded-full border border-white/20" style="background:${c}"></span>`).join('')}
+            </div>
+            <span class="text-[11px] text-slate-400 flex items-center gap-1">
+              <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              ${(item.downloads || 0).toLocaleString()}
+            </span>
+          </div>
+        </article>
+      `}).join('');
+    }
+
+    function openLightbox(id) {
+      const item = wallpapers.find(w => String(w.id) === String(id));
+      if (!item) return;
+      currentLightboxItem = item;
+      const colors = Array.isArray(item.colors) ? item.colors : ['#7c3aed', '#ec4899', '#06b6d4'];
+      const tags = Array.isArray(item.tags) ? item.tags : ['4k', 'walloraa'];
+
+      setMockupMode('raw');
+      document.getElementById('lightboxImg').src = item.image_url;
+      document.getElementById('phonePreviewImg').src = item.image_url;
+      document.getElementById('desktopPreviewImg').src = item.image_url;
+      document.getElementById('stageGlow').style.background = `radial-gradient(circle, ${colors[0]}, transparent 70%)`;
+
+      document.getElementById('lightboxTitle').textContent = item.title;
+      document.getElementById('lightboxCategory').textContent = item.category;
+      document.getElementById('lightboxRes').textContent = item.resolution || '4K UHD';
+      document.getElementById('lightboxDownloads').textContent = (item.downloads || 0).toLocaleString();
+
+      document.getElementById('lightboxPalette').innerHTML = colors.map(hex => `
+        <button onclick="copyHex('${hex}')" class="group flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 transition cursor-pointer">
+          <span class="w-4 h-4 rounded-full border border-white/20" style="background:${hex}"></span>
+          <span class="text-[11px] font-mono text-slate-300 group-hover:text-white">${hex}</span>
+        </button>
+      `).join('');
+
+      document.getElementById('lightboxTags').innerHTML = tags.map(t => `
+        <span class="text-[11px] bg-white/[0.05] text-slate-300 px-2.5 py-1 rounded-full border border-white/10">#${t}</span>
+      `).join('');
+
+      document.getElementById('lightboxDownloadBtn').onclick = () => triggerDownload(item.id);
+
+      const delBtn = document.getElementById('lightboxDeleteBtn');
+      const isCloudRow = !String(item.id).startsWith('demo-');
+      if (currentUser && isCloudRow) {
+        delBtn.classList.remove('hidden');
+        delBtn.onclick = () => { closeLightbox(); deleteWallpaper(item.id, item.image_url); };
+      } else {
+        delBtn.classList.add('hidden');
+      }
+
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function setMockupMode(mode) {
+      document.getElementById('mockupRaw').classList.toggle('hidden', mode !== 'raw');
+      document.getElementById('mockupPhone').classList.toggle('hidden', mode !== 'phone');
+      document.getElementById('mockupDesktop').classList.toggle('hidden', mode !== 'desktop');
+
+      const map = { raw: 'modeRawBtn', phone: 'modePhoneBtn', desktop: 'modeDesktopBtn' };
+      Object.entries(map).forEach(([key, btnId]) => {
+        const btn = document.getElementById(btnId);
+        if (key === mode) {
+          btn.className = 'px-3.5 py-1.5 rounded-full text-xs font-semibold bg-white text-black transition cursor-pointer';
+        } else {
+          btn.className = 'px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-300 hover:text-white transition cursor-pointer';
+        }
+      });
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function openRandomSpotlight() {
+      if (!wallpapers.length) return;
+      const random = wallpapers[Math.floor(Math.random() * wallpapers.length)];
+      openLightbox(random.id);
+    }
+
+    function copyHex(hex) {
+      navigator.clipboard?.writeText(hex);
+      showToast(`Copied color ${hex}`);
+    }
+
+    async function triggerDownload(id) {
+      const item = wallpapers.find(w => String(w.id) === String(id));
+      if (!item) return;
+
+      item.downloads = (item.downloads || 0) + 1;
+      updateStats();
+      renderGallery();
+      if (currentLightboxItem && String(currentLightboxItem.id) === String(id)) {
+        document.getElementById('lightboxDownloads').textContent = item.downloads.toLocaleString();
+      }
+
+      if (sb && !String(item.id).startsWith('demo-')) {
+        sb.rpc('increment_downloads', { row_id: item.id }).then(() => {});
+      }
+
+      showToast(`Downloading "${item.title}"...`);
+      try {
+        const res = await fetch(item.image_url);
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `${item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-walloraa-4k.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(blobUrl);
+      } catch {
+        window.open(item.image_url, '_blank');
+      }
+    }
+
+    function openUploadModal() {
+      if (!currentUser) {
+        openLoginModal();
+        return;
+      }
+      document.getElementById('uploadForm').reset();
+      selectedFile = null;
+      document.getElementById('selectedFileName').textContent = 'JPG, PNG, or WEBP (Uploads directly to Supabase)';
+      document.getElementById('uploadPreviewImg').classList.add('hidden');
+      document.getElementById('uploadPlaceholder').classList.remove('hidden');
+      updateLiveCardPreview();
+      document.getElementById('uploadModal').classList.remove('hidden');
+      document.getElementById('uploadModal').classList.add('flex');
+    }
+
+    function closeUploadModal() {
+      document.getElementById('uploadModal').classList.add('hidden');
+      document.getElementById('uploadModal').classList.remove('flex');
+    }
+
+    function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      selectedFile = file;
+      document.getElementById('selectedFileName').textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = document.getElementById('uploadPreviewImg');
+        img.src = e.target.result;
+        img.classList.remove('hidden');
+        document.getElementById('uploadPlaceholder').classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function updateLiveCardPreview() {
+      document.getElementById('previewTitleText').textContent = document.getElementById('titleInput').value.trim() || 'Untitled Artwork';
+      document.getElementById('previewCatText').textContent = document.getElementById('categoryInput').value;
+      document.getElementById('previewResBadge').textContent = document.getElementById('resolutionInput').value;
+    }
+
+    async function handlePublishWallpaper(e) {
+      e.preventDefault();
+      if (!selectedFile) {
+        showToast('Please select a wallpaper image file first.');
+        return;
+      }
+
+      const btn = document.getElementById('publishSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Uploading to Cloud...';
+
+      try {
+        const fileExt = selectedFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+
+        const { error: uploadError } = await sb.storage
+          .from('wallpapers')
+          .upload(fileName, selectedFile, { cacheControl: '3600', upsert: false });
+
+        if (uploadError) throw uploadError;
+
+        const { data: { publicUrl } } = sb.storage
+          .from('wallpapers')
+          .getPublicUrl(fileName);
+
+        const title = document.getElementById('titleInput').value.trim();
+        const category = document.getElementById('categoryInput').value;
+        const resolution = document.getElementById('resolutionInput').value;
+        const isFeatured = document.getElementById('featuredInput').checked;
+        const tagsRaw = document.getElementById('tagsInput').value.trim();
+        const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [category.toLowerCase(), '4k', 'walloraa'];
+
+        const { error: dbError } = await sb.from('wallpapers').insert([{
+          title,
+          category,
+          resolution,
+          image_url: publicUrl,
+          tags,
+          featured: isFeatured,
+          colors: ['#7c3aed', '#ec4899', '#06b6d4']
+        }]);
+
+        if (dbError) throw dbError;
+
+        closeUploadModal();
+        showToast(`"${title}" is now live on Walloraa!`);
+        await fetchWallpapersFromCloud();
+      } catch (err) {
+        console.error(err);
+        showToast(`Upload failed: ${err.message}`);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Publish to Walloraa';
+      }
+    }
+
+    async function deleteWallpaper(id, imageUrl) {
+      if (!currentUser || !sb) return;
+      showToast('Deleting wallpaper...');
+
+      const { error } = await sb.from('wallpapers').delete().eq('id', id);
+      if (error) {
+        showToast(`Delete failed: ${error.message}`);
+        return;
+      }
+
+      if (imageUrl && imageUrl.includes('/wallpapers/')) {
+        const filePath = imageUrl.split('/wallpapers/').pop();
+        if (filePath) {
+          await sb.storage.from('wallpapers').remove([filePath]);
+        }
+      }
+
+      showToast('Wallpaper removed from Walloraa');
+      await fetchWallpapersFromCloud();
+    }
+
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.add('translate-y-24', 'opacity-0'), 3200);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { closeLightbox(); closeUploadModal(); closeLoginModal(); }
+    });
+
+    initApp();
+  </script>
+</body>
+</html>
