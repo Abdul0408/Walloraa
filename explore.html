@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore 4K Wallpapers — Walloraa Archive</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="min-h-screen antialiased">
+
+  <section class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+    <div class="hud-card rounded-3xl p-6 sm:p-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span id="archiveTag" class="font-mono-tech text-[11px] text-cyan-400 uppercase tracking-widest">ARCHIVE // ALL SECTORS</span>
+          <h1 id="pageHeading" class="font-display font-bold text-3xl sm:text-4xl text-white mt-1">Explore 4K Gallery</h1>
+        </div>
+
+        <!-- Search & Filters -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <input id="searchBox" type="text" placeholder="Filter by keyword..." oninput="applyFilters()" class="bg-white/[0.05] border border-white/15 focus:border-cyan-400 rounded-full px-4 py-2 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none w-52 sm:w-64" />
+
+          <select id="resFilter" onchange="applyFilters()" class="bg-[#0c0e18] border border-white/15 rounded-full px-3.5 py-2 text-xs text-slate-200 focus:outline-none cursor-pointer">
+            <option value="All">All Resolutions</option>
+            <option value="4K UHD">4K UHD</option>
+            <option value="8K RAW">8K RAW</option>
+            <option value="Mobile 4K">Mobile 4K</option>
+            <option value="5K Retina">5K Retina</option>
+          </select>
+
+          <select id="sortFilter" onchange="applyFilters()" class="bg-[#0c0e18] border border-white/15 rounded-full px-3.5 py-2 text-xs text-slate-200 focus:outline-none cursor-pointer">
+            <option value="newest">Newest First</option>
+            <option value="popular">Trending (Downloads)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Pills -->
+      <div id="catPills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-5 mt-5 border-t border-white/10"></div>
+    </div>
+  </section>
+
+  <!-- Gallery Results -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16">
+    <p id="resultCount" class="font-mono-tech text-xs text-slate-400 mb-5">Loading archive...</p>
+    <div id="exploreGrid" class="masonry-grid"></div>
+
+    <div id="loadMoreWrap" class="hidden text-center mt-10">
+      <button onclick="loadMoreItems()" class="btn-cyber px-7 py-3 rounded-full text-xs sm:text-sm font-bold text-white shadow-lg cursor-pointer">
+        Load More Wallpapers
+      </button>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    let activeCat = params.get('cat') || 'All';
+    const initialSort = params.get('sort') || 'newest';
+    const initialQuery = params.get('q') || '';
+
+    renderShell(initialSort === 'popular' ? 'trending' : 'explore');
+
+    let filteredList = [];
+    let visibleCount = 16;
+
+    function renderPills() {
+      document.getElementById('catPills').innerHTML = CATEGORIES.map(cat => `
+        <button onclick="selectCat('${cat}')" class="px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition cursor-pointer ${
+          cat === activeCat
+            ? 'btn-cyber text-white shadow-md'
+            : 'bg-white/[0.05] text-slate-300 hover:text-white border border-white/10'
+        }">${cat}</button>
+      `).join('');
+    }
+
+    function selectCat(cat) {
+      activeCat = cat;
+      visibleCount = 16;
+      renderPills();
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const q = document.getElementById('searchBox').value.trim().toLowerCase();
+      const res = document.getElementById('resFilter').value;
+      const sort = document.getElementById('sortFilter').value;
+
+      document.getElementById('pageHeading').textContent =
+        sort === 'popular' ? 'Trending 4K Wallpapers' : (activeCat === 'All' ? 'Explore 4K Gallery' : `${activeCat} Wallpapers`);
+
+      filteredList = allWallpapers.filter(item => {
+        const matchCat = activeCat === 'All' || item.category === activeCat;
+        const matchRes = res === 'All' || (item.resolution || '4K UHD') === res;
+        const tags = Array.isArray(item.tags) ? item.tags : [];
+        const matchQ = !q || item.title.toLowerCase().includes(q) || item.category.toLowerCase().includes(q) || tags.some(t => t.toLowerCase().includes(q));
+        return matchCat && matchRes && matchQ;
+      });
+
+      if (sort === 'popular') {
+        filteredList = [...filteredList].sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
+      }
+
+      renderSlice();
+    }
+
+    function renderSlice() {
+      const slice = filteredList.slice(0, visibleCount);
+      document.getElementById('resultCount').textContent = `SHOWING ${slice.length} OF ${filteredList.length} WALLPAPERS`;
+      document.getElementById('exploreGrid').innerHTML = slice.length
+        ? slice.map(createWallpaperCardHTML).join('')
+        : `<div class="col-span-full hud-card rounded-2xl p-12 text-center text-slate-400">No wallpapers matched your filter criteria.</div>`;
+
+      document.getElementById('loadMoreWrap').classList.toggle('hidden', visibleCount >= filteredList.length);
+    }
+
+    function loadMoreItems() {
+      visibleCount += 16;
+      renderSlice();
+    }
+
+    (async function initExplore() {
+      document.getElementById('sortFilter').value = initialSort;
+      document.getElementById('searchBox').value = initialQuery;
+      renderPills();
+      await loadWalloraaData();
+      applyFilters();
+    })();
+  </script>
+</body>
+</html>
