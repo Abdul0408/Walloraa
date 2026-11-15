@@ -1,5 +1,5 @@
 // ==========================================
-// WALLORAA CORE ENGINE (app.js)
+// WALLORAA CORE ENGINE (app.js) — R2 + SUPABASE HYBRID
 // ==========================================
 const SUPABASE_URL = "https://dhzkkpsdowpsneozkhvt.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_uLdZ-Lj2jEWMmyyFNl7W7w_oXlom5lN";
@@ -82,7 +82,6 @@ function injectFuturisticTheme() {
     .font-display { font-family: 'Space Grotesk', sans-serif; }
     .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
 
-    /* Cyber Grid & Ambient Glow */
     .cyber-grid {
       background-size: 44px 44px;
       background-image: 
@@ -144,7 +143,6 @@ function injectFuturisticTheme() {
 function renderShell(activePage) {
   injectFuturisticTheme();
 
-  // Ambient Background
   const bg = document.createElement('div');
   bg.className = 'fixed inset-0 pointer-events-none z-0 cyber-grid overflow-hidden';
   bg.innerHTML = `
@@ -154,7 +152,6 @@ function renderShell(activePage) {
   `;
   document.body.prepend(bg);
 
-  // Header
   const navLinkClass = (page) =>
     activePage === page
       ? 'text-cyan-300 bg-cyan-500/10 border-cyan-400/40 shadow-[0_0_15px_rgba(0,240,255,0.15)]'
@@ -186,14 +183,12 @@ function renderShell(activePage) {
           </div>
         </a>
 
-        <!-- Multi-Page Navigation -->
         <nav class="flex items-center gap-1.5 sm:gap-2 bg-white/[0.03] p-1 rounded-full border border-white/10">
           <a href="index.html" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('home')}">Home</a>
           <a href="explore.html" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('explore')}">Explore</a>
           <a href="explore.html?sort=popular" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('trending')}">Trending</a>
         </nav>
 
-        <!-- Admin Controls -->
         <div class="flex items-center gap-2 shrink-0">
           <div id="adminControls" class="hidden items-center gap-2">
             <button onclick="openUploadModal()" class="btn-cyber flex items-center gap-1.5 text-white font-semibold text-xs px-4 py-2 rounded-full shadow-lg cursor-pointer">
@@ -214,7 +209,6 @@ function renderShell(activePage) {
   `;
   document.body.insertAdjacentHTML('afterbegin', headerHTML);
 
-  // Footer & Modals
   const footerAndModalsHTML = `
     <footer class="relative z-10 border-t border-white/[0.08] hud-panel py-8 mt-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
@@ -260,7 +254,7 @@ function renderShell(activePage) {
       <div class="hud-panel border border-cyan-500/30 rounded-3xl w-full max-w-2xl p-6 sm:p-8 shadow-2xl my-8">
         <div class="flex items-center justify-between pb-4 border-b border-white/10">
           <div>
-            <span class="font-mono-tech text-[10px] uppercase tracking-widest text-cyan-400">BATCH + AUTO-WEBP + COLOR AI</span>
+            <span class="font-mono-tech text-[10px] uppercase tracking-widest text-cyan-400">BATCH + AUTO-WEBP + CLOUDFLARE R2</span>
             <h2 class="font-display font-bold text-xl sm:text-2xl text-white">Upload 4K Wallpapers</h2>
           </div>
           <button onclick="closeUploadModal()" class="w-9 h-9 rounded-full bg-white/[0.06] hover:bg-white/[0.12] flex items-center justify-center text-slate-400 hover:text-white cursor-pointer">✕</button>
@@ -271,7 +265,7 @@ function renderShell(activePage) {
             <div onclick="document.getElementById('fileInput').click()" class="border-2 border-dashed border-cyan-500/30 hover:border-cyan-400 rounded-2xl p-5 text-center cursor-pointer transition bg-cyan-500/[0.02] hover:bg-cyan-500/[0.06]">
               <input id="fileInput" type="file" multiple accept="image/jpeg,image/png,image/webp" class="hidden" onchange="handleFileSelect(event)" />
               <p class="text-sm font-semibold text-white">Select 1 or Multiple 4K Images</p>
-              <p id="selectedFileName" class="font-mono-tech text-[11px] text-slate-400 mt-1">Auto-converts to 4K WebP + extracts color palette</p>
+              <p id="selectedFileName" class="font-mono-tech text-[11px] text-slate-400 mt-1">Auto-converts to 4K WebP + uploads to R2</p>
             </div>
 
             <div>
@@ -338,7 +332,7 @@ function renderShell(activePage) {
                 </div>
               </div>
             </div>
-            <button id="publishSubmitBtn" type="submit" class="w-full mt-4 btn-cyber py-3 rounded-xl font-bold text-sm text-white shadow-xl cursor-pointer">Deploy to Cloud</button>
+            <button id="publishSubmitBtn" type="submit" class="w-full mt-4 btn-cyber py-3 rounded-xl font-bold text-sm text-white shadow-xl cursor-pointer">Deploy to R2 Cloud</button>
           </div>
         </form>
       </div>
@@ -392,7 +386,7 @@ function updateAuthUI(user) {
   }
 }
 
-// Card Template (Links directly to dedicated wallpaper.html?id=...)
+// Card Template
 function createWallpaperCardHTML(item) {
   const colors = Array.isArray(item.colors) ? item.colors : ['#00f0ff', '#a855f7', '#ec4899'];
   const isCloud = !String(item.id).startsWith('demo-');
@@ -568,7 +562,6 @@ function processImageInBrowser(file, useWebP = true) {
     const img = new Image();
     const url = URL.createObjectURL(file);
     img.onload = () => {
-      // 1. Extract 3 dominant colors from a tiny 30x30 sample canvas
       const sampleCanvas = document.createElement('canvas');
       sampleCanvas.width = 30;
       sampleCanvas.height = 30;
@@ -580,7 +573,6 @@ function processImageInBrowser(file, useWebP = true) {
         return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
       });
 
-      // 2. Full-res WebP conversion
       if (!useWebP || file.type === 'image/webp') {
         URL.revokeObjectURL(url);
         return resolve({ blob: file, ext: file.name.split('.').pop() || 'webp', contentType: file.type, colors });
@@ -604,6 +596,7 @@ function processImageInBrowser(file, useWebP = true) {
   });
 }
 
+// NEW: UPLOADS DIRECTLY TO CLOUDFLARE R2 + SAVES URL IN SUPABASE DB
 async function handlePublishWallpaper(e) {
   e.preventDefault();
   if (!selectedFiles.length) return showToast('Select at least one image');
@@ -621,18 +614,42 @@ async function handlePublishWallpaper(e) {
 
   try {
     for (let i = 0; i < selectedFiles.length; i++) {
-      btn.textContent = `Processing ${i + 1}/${selectedFiles.length}...`;
+      btn.textContent = `Uploading ${i + 1}/${selectedFiles.length} to R2...`;
       const processed = await processImageInBrowser(selectedFiles[i], useWebP);
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${processed.ext}`;
 
-      const { error: upErr } = await sb.storage.from('wallpapers').upload(fileName, processed.blob, {
-        cacheControl: '3600',
-        contentType: processed.contentType
+      // 1. Get presigned upload URL from Vercel serverless function
+      const presignRes = await fetch('/api/get-upload-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fileName,
+          fileType: processed.contentType
+        })
       });
-      if (upErr) throw upErr;
 
-      const { data: { publicUrl } } = sb.storage.from('wallpapers').getPublicUrl(fileName);
-      const itemTitle = baseTitle ? (selectedFiles.length > 1 ? `${baseTitle} #${i + 1}` : baseTitle) : formatTitleFromFileName(selectedFiles[i].name);
+      if (!presignRes.ok) {
+        const errData = await presignRes.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to get R2 upload URL');
+      }
+
+      const { uploadUrl, publicUrl } = await presignRes.json();
+
+      // 2. Upload processed WebP/image directly to Cloudflare R2
+      const r2Res = await fetch(uploadUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': processed.contentType },
+        body: processed.blob
+      });
+
+      if (!r2Res.ok) {
+        throw new Error('Failed uploading image to Cloudflare R2');
+      }
+
+      // 3. Save R2 URL and metadata into Supabase Database
+      const itemTitle = baseTitle
+        ? (selectedFiles.length > 1 ? `${baseTitle} #${i + 1}` : baseTitle)
+        : formatTitleFromFileName(selectedFiles[i].name);
 
       const { error: dbErr } = await sb.from('wallpapers').insert([{
         title: itemTitle,
@@ -643,30 +660,42 @@ async function handlePublishWallpaper(e) {
         featured: isFeatured && i === 0,
         colors: processed.colors
       }]);
+
       if (dbErr) throw dbErr;
     }
 
     closeUploadModal();
-    showToast(`${selectedFiles.length} wallpaper(s) deployed!`);
+    showToast(`${selectedFiles.length} wallpaper(s) deployed to R2!`);
     setTimeout(() => location.reload(), 600);
   } catch (err) {
     showToast(`Upload error: ${err.message}`);
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Deploy to Cloud';
+    btn.textContent = 'Deploy to R2 Cloud';
   }
 }
 
+// SMART DELETE: HANDLES BOTH NEW R2 & OLD 300+ SUPABASE STORAGE FILES
 async function deleteWallpaper(id, imageUrl) {
   if (!currentUser) return;
   showToast('Deleting...');
+
   const { error } = await sb.from('wallpapers').delete().eq('id', id);
   if (error) return showToast(error.message);
 
-  if (imageUrl && imageUrl.includes('/wallpapers/')) {
-    const filePath = imageUrl.split('/wallpapers/').pop();
-    if (filePath) await sb.storage.from('wallpapers').remove([filePath]);
+  if (imageUrl) {
+    if (imageUrl.includes('r2.dev') || imageUrl.includes('cdn.walloraa')) {
+      await fetch('/api/delete-r2', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl })
+      }).catch(() => {});
+    } else if (imageUrl.includes('supabase.co') && imageUrl.includes('/wallpapers/')) {
+      const filePath = imageUrl.split('/wallpapers/').pop();
+      if (filePath) await sb.storage.from('wallpapers').remove([filePath]);
+    }
   }
+
   showToast('Removed from cloud');
   setTimeout(() => location.reload(), 500);
 }
