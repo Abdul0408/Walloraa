@@ -61,14 +61,6 @@ let selectedFiles = [];
 
 // Inject Futuristic Global Styles & Fonts
 function injectFuturisticTheme() {
-      html, body {
-      background-color: var(--bg-void);
-      color: #f8fafc;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-
   const style = document.createElement('style');
   style.textContent = `
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap');
@@ -80,10 +72,11 @@ function injectFuturisticTheme() {
       --neon-pink: #ec4899;
     }
 
-    body {
+   html, body {
       background-color: var(--bg-void);
       color: #f8fafc;
       font-family: 'Plus Jakarta Sans', sans-serif;
+      max-width: 100%;
       overflow-x: hidden;
     }
 
