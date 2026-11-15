@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wallpaper Preview — Walloraa 4K</title>
+  <meta id="metaDesc" name="description" content="Download free ultra-high-definition 4K & 8K OLED wallpapers on Walloraa. Zero watermarks, CC0 open-source." />
+  <link id="canonicalLink" rel="canonical" href="https://walloraa.vercel.app/wallpaper.html" />
+
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Walloraa 4K" />
+  <meta id="ogTitle" property="og:title" content="Wallpaper Preview — Walloraa 4K" />
+  <meta id="ogDesc" property="og:description" content="Download free ultra-sharp 4K & 8K wallpapers for mobile and desktop." />
+  <meta id="ogImage" property="og:image" content="" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -138,19 +149,52 @@
       showToast(`Copied ${hex}`);
     }
 
+    function updateDynamicSEO(item, tags) {
+      const pageTitle = `${item.title} (${item.resolution || '4K UHD'}) — Free ${item.category} Wallpaper | Walloraa`;
+      const desc = `Download ${item.title} in ${item.resolution || '4K UHD'} ultra-sharp resolution for mobile and desktop. Free ${item.category} wallpaper (${tags.slice(0, 5).join(', ')}) with zero watermarks on Walloraa.`;
+      const canonicalUrl = `https://walloraa.vercel.app/wallpaper.html?id=${encodeURIComponent(item.id)}`;
+
+      document.title = pageTitle;
+      document.getElementById('metaDesc')?.setAttribute('content', desc);
+      document.getElementById('canonicalLink')?.setAttribute('href', canonicalUrl);
+      document.getElementById('ogTitle')?.setAttribute('content', pageTitle);
+      document.getElementById('ogDesc')?.setAttribute('content', desc);
+      document.getElementById('ogImage')?.setAttribute('content', item.image_url);
+
+      // Inject Google ImageObject Structured Data (JSON-LD)
+      const schemaScript = document.createElement('script');
+      schemaScript.type = 'application/ld+json';
+      schemaScript.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "ImageObject",
+        "name": item.title,
+        "description": desc,
+        "contentUrl": item.image_url,
+        "acquireLicensePage": canonicalUrl,
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "creditText": "Walloraa 4K Archive",
+        "keywords": tags.join(", ")
+      });
+      document.head.appendChild(schemaScript);
+    }
+
     (async function initDetail() {
       const list = await loadWalloraaData();
       const id = new URLSearchParams(window.location.search).get('id');
       const item = list.find(w => String(w.id) === String(id)) || list[0];
       if (!item) return;
 
-      document.title = `${item.title} — Walloraa 4K Wallpaper`;
       const colors = Array.isArray(item.colors) ? item.colors : ['#00f0ff', '#a855f7', '#ec4899'];
       const tags = Array.isArray(item.tags) ? item.tags : ['4k', 'walloraa'];
 
-      document.getElementById('imgRaw').src = item.image_url;
-      document.getElementById('imgPhone').src = item.image_url;
-      document.getElementById('imgDesktop').src = item.image_url;
+      updateDynamicSEO(item, tags);
+
+      const altText = `${item.title} ${item.resolution || '4K'} ${item.category} Wallpaper`;
+      ['imgRaw', 'imgPhone', 'imgDesktop'].forEach(imgId => {
+        const el = document.getElementById(imgId);
+        el.src = item.image_url;
+        el.alt = altText;
+      });
       document.getElementById('ambientGlow').style.background = `radial-gradient(circle, ${colors[0]}, transparent 70%)`;
 
       const catLink = document.getElementById('wpCatLink');
