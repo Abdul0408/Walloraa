@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us — Walloraa 4K</title>
+  <meta name="description" content="Contact Walloraa Studio for support, feedback, partnerships, or DMCA inquiries." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="min-h-screen antialiased">
+
+  <main class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16">
+    <div class="hud-card rounded-3xl p-6 sm:p-10 space-y-6">
+      <div>
+        <span class="font-mono-tech text-[11px] text-cyan-400 uppercase tracking-widest">COMM LINK // SUPPORT &amp; INQUIRIES</span>
+        <h1 class="font-display font-bold text-3xl sm:text-4xl text-white mt-1">Contact Walloraa Studio</h1>
+        <p class="text-slate-300 text-sm mt-2">Have a question, wallpaper request, partnership inquiry, or copyright notice? Send us a message directly.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+        <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4">
+          <p class="font-mono-tech text-slate-400 uppercase text-[10px]">GENERAL &amp; DMCA EMAIL</p>
+          <p class="font-mono-tech text-cyan-300 font-bold mt-1">support@walloraa.com</p>
+        </div>
+        <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-4">
+          <p class="font-mono-tech text-slate-400 uppercase text-[10px]">RESPONSE WINDOW</p>
+          <p class="font-mono-tech text-emerald-400 font-bold mt-1">Within 24–48 Hours</p>
+        </div>
+      </div>
+
+      <form onsubmit="handleContactSubmit(event)" class="space-y-4 pt-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-mono-tech text-[11px] uppercase text-slate-300 mb-1.5">Your Name</label>
+            <input id="contactName" type="text" required placeholder="Alex Mercer" class="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" />
+          </div>
+          <div>
+            <label class="block font-mono-tech text-[11px] uppercase text-slate-300 mb-1.5">Email Address</label>
+            <input id="contactEmail" type="email" required placeholder="you@example.com" class="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-mono-tech text-[11px] uppercase text-slate-300 mb-1.5">Subject</label>
+          <select id="contactSubject" class="w-full bg-[#0c0e18] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400">
+            <option value="General Inquiry">General Inquiry / Feedback</option>
+            <option value="Wallpaper Request">4K Wallpaper Request</option>
+            <option value="DMCA / Copyright">DMCA / Copyright Removal</option>
+            <option value="Advertising / Partnership">Advertising &amp; Partnerships</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-mono-tech text-[11px] uppercase text-slate-300 mb-1.5">Message</label>
+          <textarea id="contactMsg" rows="4" required placeholder="Write your message here..." class="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-cyan-400"></textarea>
+        </div>
+
+        <button type="submit" class="w-full btn-cyber py-3.5 rounded-xl font-bold text-sm text-white shadow-xl cursor-pointer">
+          Send Message →
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+    renderShell('');
+    loadWalloraaData();
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('contactName').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const subject = document.getElementById('contactSubject').value;
+      const msg = document.getElementById('contactMsg').value.trim();
+
+      showToast('Opening your email client to send...');
+      const body = encodeURIComponent(`Name: ${name}\nReply-To: ${email}\n\n${msg}`);
+      window.location.href = `mailto:support@walloraa.com?subject=${encodeURIComponent('[Walloraa] ' + subject)}&body=${body}`;
+    }
+  </script>
+</body>
+</html>
