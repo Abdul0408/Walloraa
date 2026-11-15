@@ -210,17 +210,20 @@ function renderShell(activePage) {
   document.body.insertAdjacentHTML('afterbegin', headerHTML);
 
   const footerAndModalsHTML = `
-    <footer class="relative z-10 border-t border-white/[0.08] hud-panel py-8 mt-16">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <footer class="relative z-10 border-t border-white/[0.08] hud-panel py-8 mt-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
         <div class="flex items-center gap-2.5">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
           <span class="font-display font-bold text-white text-sm">WALLORAA</span>
           <span class="font-mono-tech text-[11px] text-slate-500">// OPEN-SOURCE 4K ARCHIVE</span>
         </div>
-        <div class="flex items-center gap-5">
+        <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
           <a href="index.html" class="hover:text-cyan-300 transition">Home</a>
           <a href="explore.html" class="hover:text-cyan-300 transition">Catalog</a>
-          <a href="explore.html?sort=popular" class="hover:text-cyan-300 transition">Trending</a>
+          <a href="privacy.html" class="hover:text-cyan-300 transition">Privacy Policy</a>
+          <a href="terms.html" class="hover:text-cyan-300 transition">Terms</a>
+          <a href="dmca.html" class="hover:text-cyan-300 transition">DMCA</a>
+          <a href="contact.html" class="hover:text-cyan-300 transition">Contact</a>
         </div>
         <p class="font-mono-tech text-[11px]">CC0 FREE LICENSE • 2026</p>
       </div>
