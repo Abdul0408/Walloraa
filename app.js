@@ -61,6 +61,14 @@ let selectedFiles = [];
 
 // Inject Futuristic Global Styles & Fonts
 function injectFuturisticTheme() {
+      html, body {
+      background-color: var(--bg-void);
+      color: #f8fafc;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
   const style = document.createElement('style');
   style.textContent = `
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap');
@@ -158,10 +166,11 @@ function renderShell(activePage) {
       : 'text-slate-300 hover:text-white border-transparent hover:bg-white/[0.05]';
 
   const headerHTML = `
-    <header class="sticky top-0 z-40 hud-panel border-b border-white/[0.08]">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between gap-4">
-        <a href="index.html" class="flex items-center gap-3 group shrink-0">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-violet-500 to-fuchsia-500 p-[1.5px] shadow-lg shadow-cyan-500/20">
+    <header class="sticky top-0 z-40 w-full hud-panel border-b border-white/[0.08]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap md:flex-nowrap items-center justify-between gap-2.5">
+        <!-- Brand Logo -->
+        <a href="index.html" class="flex items-center gap-2.5 group shrink-0">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-violet-500 to-fuchsia-500 p-[1.5px] shadow-lg shadow-cyan-500/20">
             <div class="w-full h-full bg-[#06070c] rounded-[10.5px] flex items-center justify-center">
               <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none">
                 <path d="M3.5 6.5L7.2 17.5L12 9.5L16.8 17.5L20.5 6.5" stroke="url(#wGrad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -175,35 +184,37 @@ function renderShell(activePage) {
             </div>
           </div>
           <div>
-            <div class="flex items-center gap-2">
-              <span class="font-display font-bold text-xl tracking-tight text-white">WALLORAA</span>
-              <span class="font-mono-tech text-[10px] px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">OS 2.0</span>
+            <div class="flex items-center gap-1.5">
+              <span class="font-display font-bold text-lg sm:text-xl tracking-tight text-white">WALLORAA</span>
+              <span class="font-mono-tech text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">OS 2.0</span>
             </div>
             <p class="font-mono-tech text-[10px] text-slate-400 hidden sm:block">4K NEURAL GALLERY</p>
           </div>
         </a>
 
-        <nav class="flex items-center gap-1.5 sm:gap-2 bg-white/[0.03] p-1 rounded-full border border-white/10">
-          <a href="index.html" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('home')}">Home</a>
-          <a href="explore.html" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('explore')}">Explore</a>
-          <a href="explore.html?sort=popular" class="px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('trending')}">Trending</a>
-        </nav>
-
-        <div class="flex items-center gap-2 shrink-0">
-          <div id="adminControls" class="hidden items-center gap-2">
-            <button onclick="openUploadModal()" class="btn-cyber flex items-center gap-1.5 text-white font-semibold text-xs px-4 py-2 rounded-full shadow-lg cursor-pointer">
+        <!-- Admin Controls (Stays top-right on mobile & desktop) -->
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0 md:order-3">
+          <div id="adminControls" class="hidden items-center gap-1.5 sm:gap-2">
+            <button onclick="openUploadModal()" class="btn-cyber flex items-center gap-1 text-white font-semibold text-xs px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-lg cursor-pointer">
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" d="M12 4v16m8-8H4"/></svg>
               <span>Upload</span>
             </button>
-            <button onclick="handleAdminLogout()" title="Sign Out" class="p-2 rounded-full bg-white/[0.05] hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 border border-white/10 transition cursor-pointer">
+            <button onclick="handleAdminLogout()" title="Sign Out" class="p-1.5 sm:p-2 rounded-full bg-white/[0.05] hover:bg-rose-500/20 text-slate-300 hover:text-rose-300 border border-white/10 transition cursor-pointer">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
             </button>
           </div>
-          <button id="adminLoginBtn" onclick="openLoginModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold bg-white/[0.05] hover:bg-white/[0.1] text-slate-300 hover:text-white border border-white/10 transition cursor-pointer">
+          <button id="adminLoginBtn" onclick="openLoginModal()" class="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-semibold bg-white/[0.05] hover:bg-white/[0.1] text-slate-300 hover:text-white border border-white/10 transition cursor-pointer">
             <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
             <span>Studio</span>
           </button>
         </div>
+
+        <!-- Multi-Page Navigation (Full-width centered row on mobile, centered inline on desktop) -->
+        <nav class="w-full md:w-auto md:order-2 flex items-center justify-center gap-1.5 sm:gap-2 bg-white/[0.03] p-1 rounded-full border border-white/10">
+          <a href="index.html" class="flex-1 md:flex-none text-center px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('home')}">Home</a>
+          <a href="explore.html" class="flex-1 md:flex-none text-center px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('explore')}">Explore</a>
+          <a href="explore.html?sort=popular" class="flex-1 md:flex-none text-center px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('trending')}">Trending</a>
+        </nav>
       </div>
     </header>
   `;
