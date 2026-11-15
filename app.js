@@ -59,88 +59,32 @@ let allWallpapers = [];
 let currentUser = null;
 let selectedFiles = [];
 
-// Inject Futuristic Global Styles & Fonts
 function injectFuturisticTheme() {
   const style = document.createElement('style');
-  style.textContent = `
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap');
-
-    :root {
-      --bg-void: #05060a;
-      --neon-cyan: #00f0ff;
-      --neon-violet: #a855f7;
-      --neon-pink: #ec4899;
-    }
-
-   html, body {
-      background-color: var(--bg-void);
-      color: #f8fafc;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      max-width: 100%;
-      overflow-x: hidden;
-    }
-
-    .font-display { font-family: 'Space Grotesk', sans-serif; }
-    .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
-
-    .cyber-grid {
-      background-size: 44px 44px;
-      background-image: 
-        linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(168, 85, 247, 0.03) 1px, transparent 1px);
-    }
-
-    .hud-panel {
-      background: rgba(10, 12, 20, 0.72);
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .hud-card {
-      background: linear-gradient(155deg, rgba(255, 255, 255, 0.05) 0%, rgba(10, 12, 20, 0.6) 100%);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8);
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
-    }
-
-    .hud-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(0, 240, 255, 0.45);
-      box-shadow: 0 20px 45px -12px rgba(0, 240, 255, 0.18), 0 0 20px rgba(168, 85, 247, 0.15);
-    }
-
-    .gradient-cyber {
-      background: linear-gradient(135deg, #ffffff 0%, #67e8f9 45%, #c084fc 80%, #f472b6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .btn-cyber {
-      background: linear-gradient(135deg, #06b6d4 0%, #7c3aed 50%, #db2777 100%);
-      background-size: 200% 200%;
-      transition: all 0.3s ease;
-    }
-    .btn-cyber:hover {
-      background-position: 100% 50%;
-      box-shadow: 0 0 24px rgba(0, 240, 255, 0.4);
-      transform: translateY(-1px);
-    }
-
-    .masonry-grid { column-count: 1; column-gap: 1.4rem; }
-    @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
-    @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
-    @media (min-width: 1440px) { .masonry-grid { column-count: 4; } }
-    .masonry-item { break-inside: avoid; margin-bottom: 1.4rem; }
-
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-  `;
+  style.textContent = [
+    "@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap');",
+    ":root { --bg-void: #05060a; --neon-cyan: #00f0ff; --neon-violet: #a855f7; --neon-pink: #ec4899; }",
+    "html, body { background-color: var(--bg-void); color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; max-width: 100%; overflow-x: hidden; }",
+    ".font-display { font-family: 'Space Grotesk', sans-serif; }",
+    ".font-mono-tech { font-family: 'JetBrains Mono', monospace; }",
+    ".cyber-grid { background-size: 44px 44px; background-image: linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(168, 85, 247, 0.03) 1px, transparent 1px); }",
+    ".hud-panel { background: rgba(10, 12, 20, 0.72); backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px); border: 1px solid rgba(255, 255, 255, 0.08); }",
+    ".hud-card { background: linear-gradient(155deg, rgba(255, 255, 255, 0.05) 0%, rgba(10, 12, 20, 0.6) 100%); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.8); transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease; }",
+    ".hud-card:hover { transform: translateY(-5px); border-color: rgba(0, 240, 255, 0.45); box-shadow: 0 20px 45px -12px rgba(0, 240, 255, 0.18), 0 0 20px rgba(168, 85, 247, 0.15); }",
+    ".gradient-cyber { background: linear-gradient(135deg, #ffffff 0%, #67e8f9 45%, #c084fc 80%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }",
+    ".btn-cyber { background: linear-gradient(135deg, #06b6d4 0%, #7c3aed 50%, #db2777 100%); background-size: 200% 200%; transition: all 0.3s ease; }",
+    ".btn-cyber:hover { background-position: 100% 50%; box-shadow: 0 0 24px rgba(0, 240, 255, 0.4); transform: translateY(-1px); }",
+    ".masonry-grid { column-count: 1; column-gap: 1.4rem; }",
+    "@media (min-width: 640px) { .masonry-grid { column-count: 2; } }",
+    "@media (min-width: 1024px) { .masonry-grid { column-count: 3; } }",
+    "@media (min-width: 1440px) { .masonry-grid { column-count: 4; } }",
+    ".masonry-item { break-inside: avoid; margin-bottom: 1.4rem; }",
+    ".no-scrollbar::-webkit-scrollbar { display: none; }",
+    ".no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }"
+  ].join("\n");
   document.head.appendChild(style);
 }
 
-// Render Shared Header, Footer & Admin Modals
 function renderShell(activePage) {
   injectFuturisticTheme();
 
@@ -161,7 +105,6 @@ function renderShell(activePage) {
   const headerHTML = `
     <header class="sticky top-0 z-40 w-full hud-panel border-b border-white/[0.08]">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap md:flex-nowrap items-center justify-between gap-2.5">
-        <!-- Brand Logo -->
         <a href="index.html" class="flex items-center gap-2.5 group shrink-0">
           <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-violet-500 to-fuchsia-500 p-[1.5px] shadow-lg shadow-cyan-500/20">
             <div class="w-full h-full bg-[#06070c] rounded-[10.5px] flex items-center justify-center">
@@ -185,7 +128,6 @@ function renderShell(activePage) {
           </div>
         </a>
 
-        <!-- Admin Controls (Stays top-right on mobile & desktop) -->
         <div class="flex items-center gap-1.5 sm:gap-2 shrink-0 md:order-3">
           <div id="adminControls" class="hidden items-center gap-1.5 sm:gap-2">
             <button onclick="openUploadModal()" class="btn-cyber flex items-center gap-1 text-white font-semibold text-xs px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-lg cursor-pointer">
@@ -202,7 +144,6 @@ function renderShell(activePage) {
           </button>
         </div>
 
-        <!-- Multi-Page Navigation (Full-width centered row on mobile, centered inline on desktop) -->
         <nav class="w-full md:w-auto md:order-2 flex items-center justify-center gap-1.5 sm:gap-2 bg-white/[0.03] p-1 rounded-full border border-white/10">
           <a href="index.html" class="flex-1 md:flex-none text-center px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('home')}">Home</a>
           <a href="explore.html" class="flex-1 md:flex-none text-center px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold border transition-all ${navLinkClass('explore')}">Explore</a>
@@ -214,7 +155,7 @@ function renderShell(activePage) {
   document.body.insertAdjacentHTML('afterbegin', headerHTML);
 
   const footerAndModalsHTML = `
-        <footer class="relative z-10 border-t border-white/[0.08] hud-panel py-8 mt-16">
+    <footer class="relative z-10 border-t border-white/[0.08] hud-panel py-8 mt-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
         <div class="flex items-center gap-2.5">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
@@ -233,7 +174,6 @@ function renderShell(activePage) {
       </div>
     </footer>
 
-    <!-- ADMIN LOGIN MODAL -->
     <div id="loginModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-xl p-4">
       <div class="hud-panel border border-cyan-500/30 rounded-3xl w-full max-w-md p-6 sm:p-8 shadow-2xl relative">
         <button onclick="closeLoginModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-white/[0.06] hover:bg-white/[0.12] flex items-center justify-center text-slate-400 hover:text-white cursor-pointer">✕</button>
@@ -256,7 +196,6 @@ function renderShell(activePage) {
       </div>
     </div>
 
-    <!-- BATCH UPLOAD + AUTO-WEBP STUDIO MODAL -->
     <div id="uploadModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-xl p-4 overflow-y-auto">
       <div class="hud-panel border border-cyan-500/30 rounded-3xl w-full max-w-2xl p-6 sm:p-8 shadow-2xl my-8">
         <div class="flex items-center justify-between pb-4 border-b border-white/10">
@@ -345,7 +284,6 @@ function renderShell(activePage) {
       </div>
     </div>
 
-    <!-- TOAST -->
     <div id="toast" class="fixed bottom-6 right-6 z-50 translate-y-24 opacity-0 transition-all duration-300 hud-panel border border-cyan-400/40 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-2.5 text-xs sm:text-sm font-medium">
       <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
       <span id="toastMessage">Ready</span>
@@ -354,7 +292,6 @@ function renderShell(activePage) {
   document.body.insertAdjacentHTML('beforeend', footerAndModalsHTML);
 }
 
-// Fetch Wallpapers + Session
 async function loadWalloraaData() {
   const { data: { session } } = await sb.auth.getSession();
   updateAuthUI(session?.user || null);
@@ -393,7 +330,6 @@ function updateAuthUI(user) {
   }
 }
 
-// Card Template
 function createWallpaperCardHTML(item) {
   const colors = Array.isArray(item.colors) ? item.colors : ['#00f0ff', '#a855f7', '#ec4899'];
   const isCloud = !String(item.id).startsWith('demo-');
@@ -446,7 +382,6 @@ function createWallpaperCardHTML(item) {
   `;
 }
 
-// Download Helper
 async function triggerDownload(id) {
   const item = allWallpapers.find(w => String(w.id) === String(id));
   if (!item) return;
@@ -474,7 +409,6 @@ async function triggerDownload(id) {
   }
 }
 
-// Auth & Upload Studio Functions
 function openLoginModal() {
   document.getElementById('loginErrorMsg').classList.add('hidden');
   document.getElementById('loginModal').classList.remove('hidden');
@@ -563,7 +497,6 @@ function updateLiveCardPreview() {
   document.getElementById('previewResBadge').textContent = document.getElementById('resolutionInput').value;
 }
 
-// Extracts 3 dominant hex colors & converts to WebP
 function processImageInBrowser(file, useWebP = true) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -603,7 +536,6 @@ function processImageInBrowser(file, useWebP = true) {
   });
 }
 
-// NEW: UPLOADS DIRECTLY TO CLOUDFLARE R2 + SAVES URL IN SUPABASE DB
 async function handlePublishWallpaper(e) {
   e.preventDefault();
   if (!selectedFiles.length) return showToast('Select at least one image');
@@ -625,14 +557,10 @@ async function handlePublishWallpaper(e) {
       const processed = await processImageInBrowser(selectedFiles[i], useWebP);
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${processed.ext}`;
 
-      // 1. Get presigned upload URL from Vercel serverless function
       const presignRes = await fetch('/api/get-upload-url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fileName,
-          fileType: processed.contentType
-        })
+        body: JSON.stringify({ fileName, fileType: processed.contentType })
       });
 
       if (!presignRes.ok) {
@@ -642,18 +570,14 @@ async function handlePublishWallpaper(e) {
 
       const { uploadUrl, publicUrl } = await presignRes.json();
 
-      // 2. Upload processed WebP/image directly to Cloudflare R2
       const r2Res = await fetch(uploadUrl, {
         method: 'PUT',
         headers: { 'Content-Type': processed.contentType },
         body: processed.blob
       });
 
-      if (!r2Res.ok) {
-        throw new Error('Failed uploading image to Cloudflare R2');
-      }
+      if (!r2Res.ok) throw new Error('Failed uploading image to Cloudflare R2');
 
-      // 3. Save R2 URL and metadata into Supabase Database
       const itemTitle = baseTitle
         ? (selectedFiles.length > 1 ? `${baseTitle} #${i + 1}` : baseTitle)
         : formatTitleFromFileName(selectedFiles[i].name);
@@ -682,7 +606,6 @@ async function handlePublishWallpaper(e) {
   }
 }
 
-// SMART DELETE: HANDLES BOTH NEW R2 & OLD 300+ SUPABASE STORAGE FILES
 async function deleteWallpaper(id, imageUrl) {
   if (!currentUser) return;
   showToast('Deleting...');
