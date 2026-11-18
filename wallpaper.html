@@ -75,7 +75,7 @@
         <div>
           <a id="wpCatLink" href="explore.html" class="inline-block font-mono-tech text-xs uppercase tracking-widest text-cyan-300 bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-full"></a>
           <h1 id="wpTitle" class="font-display font-bold text-2xl sm:text-3xl text-white mt-4 leading-tight">Loading...</h1>
-          <p class="font-mono-tech text-[11px] text-slate-400 mt-1.5">SOURCE: WALLORAA STUDIO • CC0 FREE</p>
+          <p class="font-mono-tech text-[11px] text-slate-400 mt-1.5">SOURCE: WALLORAA STUDIO • FREE WALLPAPER USE</p>
 
           <div class="mt-6">
             <span class="font-mono-tech text-[10px] uppercase text-slate-400 block mb-2">EXTRACTED PALETTE (CLICK TO COPY)</span>
@@ -92,8 +92,8 @@
               <span id="wpDownloads" class="font-mono-tech font-bold text-white"></span>
             </div>
             <div class="flex justify-between">
-              <span class="text-slate-400">Usage Rights</span>
-              <span class="font-mono-tech text-emerald-400">Personal & Commercial</span>
+              <span class="text-slate-400">Format & Quality</span>
+              <span id="wpFormat" class="font-mono-tech text-emerald-400">Lossless 4K WebP / JPG</span>
             </div>
           </div>
 
@@ -115,6 +115,41 @@
       </div>
     </div>
 
+    <!-- EDITORIAL OVERVIEW & TECHNICAL SPECS (SEO & ADSENSE CONTENT) -->
+    <section class="mt-8 hud-card rounded-3xl p-6 sm:p-8 border border-white/10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-8 space-y-4">
+          <span class="font-mono-tech text-[10px] uppercase tracking-widest text-cyan-400">EDITORIAL OVERVIEW // VISUAL DETAILS</span>
+          <h2 id="editorialHeading" class="font-display font-bold text-xl sm:text-2xl text-white">About This 4K Wallpaper</h2>
+          <p id="editorialDynamicText" class="text-slate-300 text-sm sm:text-base leading-relaxed"></p>
+          <div id="celebrityBioBox" class="hidden pt-3 border-t border-white/10">
+            <h3 id="celebrityBioTitle" class="font-display font-bold text-base sm:text-lg text-cyan-300 mb-1.5"></h3>
+            <p id="celebrityBioText" class="text-slate-300/90 text-sm leading-relaxed"></p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 bg-white/[0.03] rounded-2xl p-5 border border-white/10 space-y-3 text-xs">
+          <h3 class="font-display font-bold text-sm text-white uppercase tracking-wide">Display & Compatibility</h3>
+          <div class="flex justify-between py-1.5 border-b border-white/[0.06]">
+            <span class="text-slate-400">Category</span>
+            <span id="specCategory" class="font-mono-tech text-white"></span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-white/[0.06]">
+            <span class="text-slate-400">Recommended Devices</span>
+            <span class="font-mono-tech text-cyan-300">iPhone, Android, Desktop</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-white/[0.06]">
+            <span class="text-slate-400">Screen Optimization</span>
+            <span class="font-mono-tech text-white">OLED / AMOLED / Retina</span>
+          </div>
+          <div class="flex justify-between py-1.5">
+            <span class="text-slate-400">License</span>
+            <span class="font-mono-tech text-emerald-400">Personal Wallpaper Use</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- RELATED WALLPAPERS -->
     <section class="mt-14">
       <h2 class="font-display font-bold text-xl text-white mb-5">Related 4K Visuals</h2>
@@ -125,6 +160,78 @@
   <script src="app.js"></script>
   <script>
     renderShell('explore');
+
+    // Curated AdSense-Safe Editorial Profiles
+    const CELEBRITY_PROFILES = [
+      {
+        keys: ['pranali rathod', 'pranali'],
+        name: 'Pranali Rathod',
+        bio: 'Pranali Rathod is a popular Indian television actress celebrated for her expressive screen presence and memorable roles in hit Hindi dramas such as Yeh Rishta Kya Kehlata Hai and Barrister Babu. Known for her graceful ethnic ensembles, pastel sarees, and contemporary red-carpet styling, her portrait photography is widely admired by fans looking for clean, aesthetic mobile lockscreen and home screen wallpapers.'
+      },
+      {
+        keys: ['sreeleela', 'shrileela', 'shreeleela'],
+        name: 'Sreeleela',
+        bio: 'Sreeleela is a prominent Indian film actress known for her vibrant performances and energetic dance numbers across Telugu and Kannada cinema, including popular films like Dhamaka and Guntur Kaaram. Her high-resolution photoshoot portraits highlight a blend of traditional South Indian festive attire and modern editorial fashion, making her visuals a popular choice for crisp 4K smartphone displays.'
+      },
+      {
+        keys: ['shiny doshi', 'shiny'],
+        name: 'Shiny Doshi',
+        bio: 'Shiny Doshi is an acclaimed Indian television actress recognized for her versatile roles in Saraswatichandra, Sarojini, and Pandya Store. Admired for her poised elegance and effortless fashion sense, her curated portrait sessions feature rich lighting, classic ethnic silhouettes, and modern studio aesthetics tailored for high-definition vertical screens.'
+      },
+      {
+        keys: ['preity mukhundhan', 'preity', 'mukhundhan'],
+        name: 'Preity Mukhundhan',
+        bio: 'Preity Mukhundhan is a rising Indian actress, trained classical dancer, and model who gained widespread recognition through popular music videos and South Indian cinema appearances. Her visual portraits combine expressive classical grace with contemporary editorial photography, offering sharp detail and balanced color tones ideal for OLED mobile wallpapers.'
+      },
+      {
+        keys: ['khushi mali', 'khushi'],
+        name: 'Khushi Mali',
+        bio: 'Khushi Mali is an Indian television actress and model known for her refreshing screen presence and appearances in popular Hindi entertainment shows such as Taarak Mehta Ka Ooltah Chashmah. Her portrait photography showcases natural daylight aesthetics, stylish casual wear, and traditional festive looks optimized for clean, clutter-free phone backgrounds.'
+      },
+      {
+        keys: ['maheen parizada', 'maheen', 'parizada'],
+        name: 'Maheen Parizada',
+        bio: 'Maheen Parizada is a noted fashion model and digital creator recognized for her refined editorial shoots and contemporary style curation. Her high-definition portraits emphasize sharp composition, balanced studio contrast, and modern fashion aesthetics suited for high-resolution mobile and tablet screens.'
+      },
+      {
+        keys: ['kalash rohilla', 'kalash', 'rohilla'],
+        name: 'Kalash Rohilla',
+        bio: 'Kalash Rohilla is an Indian model and digital fashion personality admired for her expressive portrait photography and versatile styling across traditional and modern themes. Captured in high clarity with rich color depth, these curated visuals are formatted to preserve sharpness on modern AMOLED and Retina displays.'
+      }
+    ];
+
+    function buildEditorialContent(item, tags) {
+      const res = item.resolution || '4K UHD';
+      const cat = item.category || '4K Gallery';
+      const tagText = tags.length ? tags.slice(0, 4).join(', ') : cat.toLowerCase();
+
+      // Dynamic sentence variations based on item ID hash so pages stay unique
+      const seed = String(item.id).split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+      const templates = [
+        `Download "${item.title}" in crisp ${res} resolution from Walloraa's curated ${cat} archive. Formatted to preserve fine edge clarity, balanced contrast, and natural color accuracy, this wallpaper fits modern Android, iPhone, and desktop screens without compression artifacts. Tagged under ${tagText}, it can be previewed live on both Phone Lockscreen and Desktop Monitor modes before downloading.`,
+        `Explore "${item.title}", a high-definition ${res} visual featured in our ${cat} collection. Optimized for sharp pixel density on OLED, AMOLED, and Retina displays, this image delivers clean framing and vibrant tonal balance (${tagText}) with zero watermarks. Use the interactive preview switcher above to inspect how it aligns with your lockscreen clock or desktop dock.`,
+        `This "${item.title}" wallpaper is archived in ${res} quality under Walloraa's ${cat} section. Carefully processed for fast loading and maximum visual sharpness across ${tagText} themes, it offers a clean, distraction-free background for smartphones, tablets, and widescreen monitors.`
+      ];
+
+      document.getElementById('editorialHeading').textContent = `${item.title} — ${res} ${cat} Wallpaper`;
+      document.getElementById('editorialDynamicText').textContent = templates[seed % templates.length];
+      document.getElementById('specCategory').textContent = cat;
+
+      // Match celebrity bio if title or tags mention one of the actresses
+      const searchCorpus = `${item.title} ${tags.join(' ')}`.toLowerCase();
+      const matchedCeleb = CELEBRITY_PROFILES.find(profile =>
+        profile.keys.some(k => searchCorpus.includes(k))
+      );
+
+      const bioBox = document.getElementById('celebrityBioBox');
+      if (matchedCeleb) {
+        document.getElementById('celebrityBioTitle').textContent = `About ${matchedCeleb.name}`;
+        document.getElementById('celebrityBioText').textContent = matchedCeleb.bio;
+        bioBox.classList.remove('hidden');
+      } else {
+        bioBox.classList.add('hidden');
+      }
+    }
 
     function setMode(mode) {
       document.getElementById('viewRaw').classList.toggle('hidden', mode !== 'raw');
@@ -161,7 +268,6 @@
       document.getElementById('ogDesc')?.setAttribute('content', desc);
       document.getElementById('ogImage')?.setAttribute('content', item.image_url);
 
-      // Inject Google ImageObject Structured Data (JSON-LD)
       const schemaScript = document.createElement('script');
       schemaScript.type = 'application/ld+json';
       schemaScript.textContent = JSON.stringify({
@@ -171,7 +277,6 @@
         "description": desc,
         "contentUrl": item.image_url,
         "acquireLicensePage": canonicalUrl,
-        "license": "https://creativecommons.org/publicdomain/zero/1.0/",
         "creditText": "Walloraa 4K Archive",
         "keywords": tags.join(", ")
       });
@@ -188,6 +293,7 @@
       const tags = Array.isArray(item.tags) ? item.tags : ['4k', 'walloraa'];
 
       updateDynamicSEO(item, tags);
+      buildEditorialContent(item, tags);
 
       const altText = `${item.title} ${item.resolution || '4K'} ${item.category} Wallpaper`;
       ['imgRaw', 'imgPhone', 'imgDesktop'].forEach(imgId => {
