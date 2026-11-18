@@ -6,7 +6,7 @@ const SUPABASE_ANON_KEY = "sb_publishable_uLdZ-Lj2jEWMmyyFNl7W7w_oXlom5lN";
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-const CATEGORIES = ['All', 'Beauty', 'Abstract', 'Nature', 'Cars & Bikes', 'Anime', 'Minimal', 'AMOLED Dark'];
+const CATEGORIES = ['All', 'Celebrities', 'Abstract', 'Nature', 'Cars & Bikes', 'Anime', 'Animals', 'Architecture', 'Minimal', 'AMOLED Dark'];
 
 const STARTER_WALLPAPERS = [
   {
@@ -228,8 +228,10 @@ function renderShell(activePage) {
                   <option value="Abstract">Abstract</option>
                   <option value="Nature">Nature</option>
                   <option value="Cars & Bikes">Cars & Bikes</option>
+                  <option value="Animals">Animals</option>
+                  <option value="Architecture">Architecture</option>
                   <option value="Minimal">Minimal</option>
-                  <option value="Beauty">Beauty</option>
+                  <option value="Celebrities">Celebrities</option>
                 </select>
               </div>
               <div>
